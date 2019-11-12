@@ -1,6 +1,6 @@
 # Football coach assistant
 
-[insert here a short description of the application (with f.ex the main features of the application)]
+[**TODO**: insert here a short description of the application (with f.ex the main features of the application)]
 
 ## Technical architecture
 The application is composed of: 
@@ -8,9 +8,10 @@ The application is composed of:
  - a back-end API
  - a configuration to run on CircleCI (TODO: Not implemented yet!)
 
-The backend API returns today's date in text format 
-`{'today': '...'}`
-
+The backend API has two endpoints: 
+ - `/api/now` returns today's date in JSON format `{'today': '...'}`
+ - `/healthcheck` returns the String 'RUNNING' 
+ 
 
 ## Available Scripts (npm)
 
