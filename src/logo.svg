@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="55px" height="40px" viewBox="0 0 45 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Logo We Ignite Tech</title>
+    <desc>We Ignite Tech</desc>
+    <defs>
+        <linearGradient x1="63.9197716%" y1="-15.1977539%" x2="-30.9795673%" y2="81.6970825%" id="linearGradient-1">
+            <stop stop-color="#1a6b94" offset="0%"></stop>
+            <stop stop-color="#1a6b94" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="logoFace-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(3.000000, -6.000000)">
+            <g id="Group">
+                <text id="WIT" font-family="Courier" font-size="11.25" font-weight="normal" fill="#1a6b94">
+                    <tspan x="10.2059332" y="32.6267665">WIT</tspan>
+                </text>
+                <path d="M30.0921719,4.39309671 C12.2913682,22.8204699 3.58419457,32.2273846 3.9706509,32.613841 C4.35710723,33.0002973 13.764022,24.2931236 32.1913952,6.49231996 C32.7710796,5.91263547 32.7710796,4.9727812 32.1913952,4.39309671 C31.6117107,3.81341221 30.6718564,3.81341221 30.0921719,4.39309671 Z" id="Line-17-Copy-15" fill="url(#linearGradient-1)" fill-rule="nonzero" transform="translate(18.292246, 18.292246) rotate(19.000000) translate(-18.292246, -18.292246) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
