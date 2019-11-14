@@ -6,9 +6,14 @@
   height: 40vmin;
 }
 
+.Canvas-Styling{
+  text-align: left;
+  border: 1in azure;
+}
+
 .Frontpage-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
