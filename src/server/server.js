@@ -54,6 +54,19 @@ const now = router.get('/api/now',
 })
 app.use(now);
 
+/* 
+  '/api/players' endpoint
+  This endpoint returns the actual date
+*/
+const players = router.get('/api/players',
+    (ctx) => {
+        console.log('path: ', ctx.path);
+        console.log('query: ', ctx.query);
+        ctx.status = HttpStatus.OK;
+        const date = new Date();
+        ctx.body = `[{"name": "Vinh"}]`;
+    })
+app.use(players);
 
 /*
  This is where we start the server 
