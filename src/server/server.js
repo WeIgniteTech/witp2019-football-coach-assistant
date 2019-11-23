@@ -64,7 +64,7 @@ const players = router.get('/api/players',
         console.log('query: ', ctx.query);
         ctx.status = HttpStatus.OK;
         const date = new Date();
-        ctx.body = `[{"name": "Vinh"}]`;
+        ctx.body = `[{"name": "Vinh"},{"name": "Thomas"},{"name": "Tahir"},{"name": "Boushra"},{"name": "Gayathri"},{"name": "Ingar"},{"name": "Mary"},{"name": "Maha"},{"name": "Erlend"}]`;
     })
 app.use(players);
 
