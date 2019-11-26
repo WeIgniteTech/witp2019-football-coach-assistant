@@ -1,6 +1,6 @@
 import React from 'react'
 
-class CanClass extends React.Component {
+class CanvasClass extends React.Component {
     componentDidMount() {
       const canvas = this.refs.canvas
       const ctx = canvas.getContext("2d")
@@ -22,4 +22,4 @@ class CanClass extends React.Component {
       )
     }
   }
-  export default CanClass
+  export default CanvasClass
