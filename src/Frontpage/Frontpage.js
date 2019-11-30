@@ -16,18 +16,22 @@ const Frontpage = (props) => {
     {name: 'Maha'},
     {name: 'Yusuf'}
   ]
-    
+
+  function something(playerName){
+   console.log("in Something"+playerName);
+  };
+
   const showPlayer = () =>{
     let i=0
     let index=0
-    let canvas_list=players.map(player=><CanClass playerName={player.name} key={player.name}/>)
+    let canvas_list=players.map(player=><CanClass playerName={player.name} key={player.name} />)
     let players_show_list=[]
     //console.log(players.length)
     
     if(players.length%3===0){
       while(i<(players.length/3))
       {console.log(players.length)
-        players_show_list.push(<tr key={i}><td>{canvas_list[index]}</td><td>{canvas_list[index+1]}</td><td>{canvas_list[index+2]}</td></tr>)
+        players_show_list.push(<tr key={i}><td onClick={something(players[index])}>{canvas_list[index]}</td><td onClick={something(players[index+1])}>{canvas_list[index+1]}</td><td onClick={something(players[index]+2)}>{canvas_list[index+2]}</td></tr>)
         index=index+3
         i=i+1
       }
@@ -36,7 +40,7 @@ const Frontpage = (props) => {
     else if(players.length%3===1){
       while(i<(players.length/3))
       {
-        players_show_list.push(<tr key={i}><td>{canvas_list[index]}</td><td>{canvas_list[index+1]}</td><td>{canvas_list[index+2]}</td></tr>)
+        players_show_list.push(<tr key={i}><td onClick={something(players[index])}>{canvas_list[index]}</td><td onClick={something(players[index+1])}>{canvas_list[index+1]}</td><td onClick={something(players[index]+2)}>{canvas_list[index+2]}</td></tr>)
         index=index+3
         i++
       }
@@ -45,11 +49,11 @@ const Frontpage = (props) => {
     else
     {    while(i<(players.length/3))
       {
-        players_show_list.push(<tr key={i}><td>{canvas_list[index]}</td><td>{canvas_list[index+1]}</td><td>{canvas_list[index+2]}</td></tr>)
+        players_show_list.push(<tr key={i}><td onClick={something(players[index])}>{canvas_list[index]}</td><td onClick={something(players[index+1])}>{canvas_list[index+1]}</td><td onClick={something(players[index]+2)}>{canvas_list[index+2]}</td></tr>)
         index=index+3
         i++
       }
-      players_show_list.push(<tr key={i}><td>{canvas_list[index]}</td><td>{canvas_list[index+1]}</td></tr>)
+      players_show_list.push(<tr key={i}><td onClick={something(players[index])}>{canvas_list[index]}</td><td onClick={something(players[index+1])}>{canvas_list[index+1]}</td><td onClick={something(players[index]+2)}>{canvas_list[index+2]}</td></tr>)
    }
 
     return(
