@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "autoresponsive-react": "^1.1.31",
     "http-status": "^1.4.0",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
