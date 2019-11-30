@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Frontpage.css';
-import DisplayPlayers from '../components/DisplayPlayers';
+import DisplayPlayers from '../DisplayPlayers/DisplayPlayers';
 
 
 const Frontpage = (props) => {
