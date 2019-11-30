@@ -13,7 +13,7 @@ const Frontpage = (props) => {
 
           <DisplayPlayers/>
       </div>
-    );
+  );
 };
 
 export default Frontpage;

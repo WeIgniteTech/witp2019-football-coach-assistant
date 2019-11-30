@@ -64,7 +64,44 @@ const players = router.get('/api/players',
         console.log('query: ', ctx.query);
         ctx.status = HttpStatus.OK;
         const date = new Date();
-        ctx.body = `[{"name": "Vinh"},{"name": "Thomas"},{"name": "Tahir"},{"name": "Boushra"},{"name": "Gayathri"},{"name": "Ingar"},{"name": "Mary"},{"name": "Maha"},{"name": "Erlend"}]`;
+        ctx.body = `[
+         {
+           "name": "Vinh",
+           "attend": false
+         },
+         {
+           "name": "Thomas"
+           "attend": false
+         },
+         {
+           "name": "Tahir"
+           "attend": false 
+         },
+         {
+           "name": "Boushra"
+           "attend": false
+         },
+         {
+           "name": "Gayathri"
+           "attend": false
+         },
+         {
+           "name": "Ingar"
+           "attend": false
+         },
+         {
+           "name": "Mary"
+           "attend": false
+         },
+         {
+           "name": "Maha"
+           "attend": false
+         },
+         {
+           "name": "Erlend"
+           "attend": false
+         }
+       ]`;
     })
 app.use(players);
 
