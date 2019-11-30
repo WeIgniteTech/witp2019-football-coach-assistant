@@ -25,3 +25,5 @@ yarn-error.log*
 # Visual Studio 2015/2017 cache/options directory
 .vs/ 
 
+# ignore inteliJ files
+/.idea
