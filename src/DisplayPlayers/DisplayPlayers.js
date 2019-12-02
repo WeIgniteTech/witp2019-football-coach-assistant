@@ -1,7 +1,8 @@
-import React from 'react'
-import Players from '../Players.json'
+import React,{useContext} from 'react'
 import ReactDOM from 'react-dom';
 import AutoResponsive from 'autoresponsive-react'
+import {PlayerResourceContext} from '../ApiPlayerResourceProvider/ApiPlayerResourceProvider'
+import Players from '../Players.json'
 
 let style = {
     height: 200,
@@ -39,8 +40,11 @@ let selectedStyle = {
     margin: '10px'
 };
 
+
 class DisplayPlayers extends React.Component {
 
+   static PlayersContext = PlayerResourceContext;
+   static playerResource=PlayerResourceContext
     selectPlayer(e, key) {
         var selectedPlayers = this.state.selectedPlayers;
         if (selectedPlayers.has(key)) {
@@ -55,9 +59,10 @@ class DisplayPlayers extends React.Component {
 
 
     constructor(props) {
-        super(props);
+        
+      super(props);
         this.state = {
-            playerList: Players,
+           playerList:Players,
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
@@ -68,6 +73,7 @@ class DisplayPlayers extends React.Component {
     }
 
     componentDidMount() {
+        
         window.addEventListener('resize', () => {
             this.setState({
                 containerWidth: ReactDOM.findDOMNode(this.refs.container).clientWidth-ReactDOM.findDOMNode(this.refs.container).clientWidth*0.4
@@ -92,19 +98,26 @@ class DisplayPlayers extends React.Component {
     }
 
     render() {
+          
         return (
             <div>
-
-                <AutoResponsive ref="container" {...this.getAutoResponsiveProps()}>
-                    {this.renderItems()}
-                </AutoResponsive>
+               
+                
+                <PlayerResourceContext.Consumer ref="container">  
+                {value=>
+                (<AutoResponsive  {...this.getAutoResponsiveProps()}>
+                { this.renderItems(value)}
+                </AutoResponsive>)
+                }
+                </PlayerResourceContext.Consumer>
+                              
             </div>
         );
     }
 
 
-    renderItems() {
-        return this.state.playerList.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
+    renderItems(pp) {
+         return pp.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
     }
 
     renderItem(i, styleToUse) {
