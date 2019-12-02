@@ -8,7 +8,7 @@ const Frontpage = (props) => {
     return (
         <div className="Frontpage">
         <header className="Frontpage-header">
-          <h1>Foot-ball Coach Assistant</h1>
+          <h1>Football Coach Assistant</h1>
           {/* <img src={props.logo} className="Frontpage-logo" alt="logo" /> */}
         </header>
 
