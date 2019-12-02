@@ -1,7 +1,8 @@
-import React from 'react'
-import Players from '../Players.json'
+import React,{useContext} from 'react'
 import ReactDOM from 'react-dom';
 import AutoResponsive from 'autoresponsive-react'
+import {PlayerResourceContext} from '../ApiPlayerResourceProvider/ApiPlayerResourceProvider'
+
 
 let style = {
     height: 200,
@@ -39,7 +40,11 @@ let selectedStyle = {
     margin: '10px'
 };
 
+
 class DisplayPlayers extends React.Component {
+
+   static PlayersContext = PlayerResourceContext;
+    static playerList=[{name:'f'}];
 
     selectPlayer(e, key) {
         var selectedPlayers = this.state.selectedPlayers;
@@ -55,9 +60,11 @@ class DisplayPlayers extends React.Component {
 
 
     constructor(props) {
-        super(props);
+      super(props);
+      //const playerResource=useContext(PlayerResourceContext)
+        //window.alert(playerResource+'sd')    
         this.state = {
-            playerList: Players,
+          
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
@@ -68,6 +75,7 @@ class DisplayPlayers extends React.Component {
     }
 
     componentDidMount() {
+        
         window.addEventListener('resize', () => {
             this.setState({
                 containerWidth: ReactDOM.findDOMNode(this.refs.container).clientWidth-ReactDOM.findDOMNode(this.refs.container).clientWidth*0.4
@@ -92,19 +100,23 @@ class DisplayPlayers extends React.Component {
     }
 
     render() {
+          
         return (
             <div>
-
+                <PlayerResourceContext.Consumer>                
                 <AutoResponsive ref="container" {...this.getAutoResponsiveProps()}>
-                    {this.renderItems()}
+                 {value=>{if(value.length>0) this.renderItems(value)}}
                 </AutoResponsive>
+                </PlayerResourceContext.Consumer>
             </div>
         );
     }
 
 
-    renderItems() {
-        return this.state.playerList.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
+    renderItems(pp) {
+        window.alert(pp)
+       // if(this.playerList!=undefined)
+         return pp.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
     }
 
     renderItem(i, styleToUse) {

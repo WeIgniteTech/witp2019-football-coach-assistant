@@ -1,9 +1,10 @@
 import * as React from 'react';
 import './Frontpage.css';
 import DisplayPlayers from '../DisplayPlayers/DisplayPlayers';
-
+import Connect from "../Connect/Connect"
 
 const Frontpage = (props) => {
+let players=Connect("http://localhost:3000/api/players");
 
     return (
         <div className="Frontpage">
@@ -11,7 +12,7 @@ const Frontpage = (props) => {
           <img src={props.logo} className="Frontpage-logo" alt="logo" />
         </header>
 
-          <DisplayPlayers/>
+          <DisplayPlayers Players={players}/>
       </div>
   );
 };

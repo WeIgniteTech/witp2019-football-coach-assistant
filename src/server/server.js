@@ -70,35 +70,35 @@ const players = router.get('/api/players',
            "attend": false
          },
          {
-           "name": "Thomas"
+           "name": "Thomas",
            "attend": false
          },
          {
-           "name": "Tahir"
+           "name": "Tahir",
            "attend": false 
          },
          {
-           "name": "Boushra"
+           "name": "Boushra",
            "attend": false
          },
          {
-           "name": "Gayathri"
+           "name": "Gayathri",
            "attend": false
          },
          {
-           "name": "Ingar"
+           "name": "Ingar",
            "attend": false
          },
          {
-           "name": "Mary"
+           "name": "Mary",
            "attend": false
          },
          {
-           "name": "Maha"
+           "name": "Maha",
            "attend": false
          },
          {
-           "name": "Erlend"
+           "name": "Erlend",
            "attend": false
          }
        ]`;
