@@ -2,7 +2,7 @@ import React,{useContext} from 'react'
 import ReactDOM from 'react-dom';
 import AutoResponsive from 'autoresponsive-react'
 import {PlayerResourceContext} from '../ApiPlayerResourceProvider/ApiPlayerResourceProvider'
-
+import Players from '../Players.json'
 
 let style = {
     height: 200,
@@ -44,8 +44,7 @@ let selectedStyle = {
 class DisplayPlayers extends React.Component {
 
    static PlayersContext = PlayerResourceContext;
-    static playerList=[{name:'f'}];
-
+   static playerResource=PlayerResourceContext
     selectPlayer(e, key) {
         var selectedPlayers = this.state.selectedPlayers;
         if (selectedPlayers.has(key)) {
@@ -60,11 +59,10 @@ class DisplayPlayers extends React.Component {
 
 
     constructor(props) {
+        
       super(props);
-      //const playerResource=useContext(PlayerResourceContext)
-        //window.alert(playerResource+'sd')    
         this.state = {
-          
+           playerList:Players,
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
@@ -103,19 +101,22 @@ class DisplayPlayers extends React.Component {
           
         return (
             <div>
-                <PlayerResourceContext.Consumer>                
-                <AutoResponsive ref="container" {...this.getAutoResponsiveProps()}>
-                 {value=>{if(value.length>0) this.renderItems(value)}}
-                </AutoResponsive>
+               
+                
+                <PlayerResourceContext.Consumer ref="container">  
+                {value=>
+                (<AutoResponsive  {...this.getAutoResponsiveProps()}>
+                { this.renderItems(value)}
+                </AutoResponsive>)
+                }
                 </PlayerResourceContext.Consumer>
+                              
             </div>
         );
     }
 
 
     renderItems(pp) {
-        window.alert(pp)
-       // if(this.playerList!=undefined)
          return pp.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
     }
 
