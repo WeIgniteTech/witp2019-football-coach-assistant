@@ -7,6 +7,7 @@ const serve = require("koa-static");
 const router = require('koa-route');
 const mount = require("koa-mount");
 
+const request = require('request');
 
 const app = new Koa();
 const PORT = process.env.PORT || 3000;
@@ -58,50 +59,16 @@ app.use(now);
   '/api/players' endpoint
   This endpoint returns the actual date
 */
-const players = router.get('/api/players',
+
+const players = router.get('/api/players2',
     (ctx) => {
         console.log('path: ', ctx.path);
         console.log('query: ', ctx.query);
         ctx.status = HttpStatus.OK;
-        const date = new Date();
-        ctx.body = `[
-         {
-           "name": "Vinh",
-           "attend": false
-         },
-         {
-           "name": "Thomas"
-           "attend": false
-         },
-         {
-           "name": "Tahir"
-           "attend": false 
-         },
-         {
-           "name": "Boushra"
-           "attend": false
-         },
-         {
-           "name": "Gayathri"
-           "attend": false
-         },
-         {
-           "name": "Ingar"
-           "attend": false
-         },
-         {
-           "name": "Mary"
-           "attend": false
-         },
-         {
-           "name": "Maha"
-           "attend": false
-         },
-         {
-           "name": "Erlend"
-           "attend": false
-         }
-       ]`;
+        const Url = "https://api.airtable.com/v0/appir4fX2DVduzuQT/players?api_key=keyRn88PFIqnmOc0s";
+        var json = request(Url);
+        ctx.set('Content-Type', 'application/json');
+        ctx.body = json;
     })
 app.use(players);
 
