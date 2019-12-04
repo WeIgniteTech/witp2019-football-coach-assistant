@@ -3,7 +3,6 @@ const BodyParser = require("koa-bodyparser");
 const Logger = require("koa-logger");
 const HttpStatus = require("http-status");
 const cors = require('koa-cors');
-
 const serve = require("koa-static");
 const router = require('koa-route');
 const mount = require("koa-mount");
@@ -22,7 +21,7 @@ app.use(mount("/", static_pages));
 
 app.use(BodyParser());
 app.use(Logger());
-app.use(cors().al);
+app.use(cors());
 
 /* 
   This is the API / dynamic part of the application

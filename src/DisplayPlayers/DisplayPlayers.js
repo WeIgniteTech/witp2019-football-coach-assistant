@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import AutoResponsive from 'autoresponsive-react'
 import PlayerResourceContext from "../ApiPlayerResourceProvider/ApiPlayerResourceProvider";
 import axios from "axios";
+import Popup from "reactjs-popup";
+import ChoosePlayer from "../ChoosePlayer/choosePlayerModal";
 
 
 let style = {
@@ -22,6 +24,25 @@ let style = {
     userSelect: 'RED',
     margin: '10px'
 };
+
+let buttonStyle = {
+    height: 50,
+    width: 150,
+    cursor: 'default',
+    color: '#0000ff',
+    borderRadius: 5,
+    boxShadow: '0 1px 0 rgba(255,255,255,0.5) inset',
+    backgroundColor: '#a28f27',
+    borderColor: '#796b1d',
+    fontSize: '10px',
+    lineHeight: '10px',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadow: '1px 1px 0px #ab9a3c',
+    userSelect: 'RED',
+    margin: '10px'
+};
+
 
 let selectedStyle = {
     height: 150,
@@ -66,8 +87,9 @@ class DisplayPlayers extends React.Component {
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
-            containerWidth: 800,
-            selectedPlayers: new Set()
+            containerWidth: '800',
+            selectedPlayers: new Set(),
+            teams: new Array()
         };
         this.frame = 30;
     }
@@ -94,7 +116,7 @@ class DisplayPlayers extends React.Component {
             transitionDuration: '.8',
             transitionTimingFunction: 'easeIn',
             position: 'relative',
-            marginLeft: '50px'
+            marginLeft: '10px'
 
         };
     }
@@ -110,13 +132,18 @@ class DisplayPlayers extends React.Component {
 
     render() {
         return (
+
             <div>
+                <div className="btn-group">
+                    <Popup modal trigger={<button type="button" key="5"  className="btn btn-default" style={buttonStyle}>Team Distribution</button>}>
+                        {close => <ChoosePlayer close={close} />}
+                    </Popup>
+                </div>
                 <AutoResponsive  {...this.getAutoResponsiveProps()}>
                     {this.renderItems(this.state.playerList)}
                 </AutoResponsive>
             </div>
         );
-
     }
 
     renderItems(pp) {
@@ -130,6 +157,21 @@ class DisplayPlayers extends React.Component {
                 {i.name}
             </div>
         )
+    }
+
+    getRandom(attendingPlayers, teamSize, selectedPlayers) {
+        var result = new Array(teamSize),
+            length = attendingPlayers.length,
+            taken = new Array(length);
+        if (teamSize > length) {
+            console.log("getRandom: more elements taken than available");
+        }
+        while (teamSize--) {
+            var x = Math.floor(Math.random() * length);
+            result[teamSize] = attendingPlayers[x in taken ? taken[x] : x];
+            taken[x] = --length in taken ? taken[length] : length;
+        }
+        return result;
     }
 }
 
