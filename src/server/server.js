@@ -7,10 +7,12 @@ const serve = require("koa-static");
 const router = require('koa-route');
 const mount = require("koa-mount");
 
-const request = require('request');
-
 const app = new Koa();
 const PORT = process.env.PORT || 3000;
+
+// Airtable credentials
+const Airtable = require('airtable');
+const base = new Airtable({apiKey: 'keyRn88PFIqnmOc0s'}).base('appir4fX2DVduzuQT');
 
 /* 
   This is the static part of the server: 
@@ -57,81 +59,47 @@ app.use(now);
 
 /* 
   '/api/players' endpoint
-  This endpoint returns the actual date
+  This endpoint returns the list of players from Airtable
 */
+app.use(router.get('/api/players', async function (ctx) {
+  try {
+    const records = await getPlayers();
+    console.log('Retrieved this nb of records: ', records.length);
 
-const players_OLD = router.get('/api/players_OLD',
-    (ctx) => {
-        console.log('path: ', ctx.path);
-        console.log('query: ', ctx.query);
-        ctx.status = HttpStatus.OK;
-        const Url = "https://api.airtable.com/v0/appir4fX2DVduzuQT/players?api_key=keyRn88PFIqnmOc0s";
-
-        var json = request(Url);
-        ctx.set('Content-Type', 'application/json');
-
-        /*
-        console.log('json ------->', json);
-        var playersList = [];
-        var records = json.Records;
-
-        records.forEach(function (record) {
-            var aPlayer;
-            aPlayer.name = record.fields.Name;
-
-            aPlayer.position = record.fields.Position;
-            aPlayer.attending = false;
-
-            playersList.push(aPlayer);
-        });*/
-        //ctx.body = playersList;
-        console.log('json ------->', json);
-
-        ctx.body = json;
-    })
-app.use(players_OLD);
-
-
-
-const players = router.get('/api/players', async (ctx) => {
-    try {
-        const record = await getBase();
-        console.log('Retrieved', record.id);
-        ctx.body = "Record ID from API: " + record.id;
-    } catch (err) {
-    }
-});
-app.use(players);
-
-
-function getBase() {
-    return new Promise((resolve, reject) => {
-        base('appir4fX2DVduzuQT').find('keyRn88PFIqnmOc0s', function (err, record) {
-            console.log('Retrieved', record.id);
-            if (err) {
-                reject(err)
-            } else {
-                resolve(record);
-            }
-        });
+    let playersList = [];
+    records.forEach((record) => {
+      playersList.push({
+        "name": record.fields.Name,
+        "position": record.fields.Position,
+        "attending": false
+      });
     });
-}
 
-async function getPlayers() {
-    var Airtable = require('airtable');
-    var base = new Airtable({ apiKey: 'keyRn88PFIqnmOc0s' }).base('appir4fX2DVduzuQT');
+    ctx.body = playersList;
+  } catch (err) {
+    console.log('Got an error: ', err);
+    ctx.body = "Failed :( ";
+    // handle exception
+  }
+}));
 
-    var recordsList = [];
+// Function that returns all the records from the firstPage of a table in Airtable
+// The table is here: https://api.airtable.com/v0/appir4fX2DVduzuQT/players?api_key=keyRn88PFIqnmOc0s 
+// OBS: max 100 rows
+// Inspired from: https://stackoverflow.com/a/58776599 
+// You can also read other commands to AirTable here: https://flaviocopes.com/airtable/
+function getPlayers() {
+  return new Promise((resolve, reject) => {
     base('players').select({
-        view: 'Grid view'
+      view: 'Grid view'
     }).firstPage(function (err, records) {
-        if (err) { console.error(err); return; }
-        records.forEach(function (record) {
-            recordsList.push(record);
-            console.log('Retrieved', record.get('Name'));
-        });
+      if (err) {
+        reject(err)
+      } else {
+        resolve(records);
+      }
     });
-    return recordsList;
+  });
 }
 
 
