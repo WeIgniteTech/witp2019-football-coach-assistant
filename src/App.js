@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './BlueLogo.svg';
 import Frontpage from './Frontpage/Frontpage';
 import ApiPlayerResourceProvider from './ApiPlayerResourceProvider/ApiPlayerResourceProvider';
 
