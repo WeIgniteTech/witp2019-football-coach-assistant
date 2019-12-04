@@ -8,7 +8,7 @@ const router = require('koa-route');
 const mount = require("koa-mount");
 
 const app = new Koa();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Airtable credentials
 const Airtable = require('airtable');
