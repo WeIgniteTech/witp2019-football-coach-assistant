@@ -4,13 +4,11 @@ import Frontpage from './Frontpage/Frontpage';
 import ApiPlayerResourceProvider from './ApiPlayerResourceProvider/ApiPlayerResourceProvider';
 
 function App() {
-  return (
-    <div>
-        <ApiPlayerResourceProvider>
-          <Frontpage logo={logo}/>
-        </ApiPlayerResourceProvider>
-    </div>
-  );
+    return (
+            <div>
+                <Frontpage logo={logo}/>
+            </div>
+    );
 }
 
 export default App;

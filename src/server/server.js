@@ -2,14 +2,14 @@ const Koa = require('koa');
 const BodyParser = require("koa-bodyparser");
 const Logger = require("koa-logger");
 const HttpStatus = require("http-status");
-
+const cors = require('koa-cors');
 const serve = require("koa-static");
 const router = require('koa-route');
 const mount = require("koa-mount");
 
 
 const app = new Koa();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 /* 
   This is the static part of the server: 
@@ -21,7 +21,7 @@ app.use(mount("/", static_pages));
 
 app.use(BodyParser());
 app.use(Logger());
-
+app.use(cors());
 
 /* 
   This is the API / dynamic part of the application
@@ -64,44 +64,7 @@ const players = router.get('/api/players',
         console.log('query: ', ctx.query);
         ctx.status = HttpStatus.OK;
         const date = new Date();
-        ctx.body = `[
-         {
-           "name": "Vinh",
-           "attend": false
-         },
-         {
-           "name": "Thomas",
-           "attend": false
-         },
-         {
-           "name": "Tahir",
-           "attend": false 
-         },
-         {
-           "name": "Boushra",
-           "attend": false
-         },
-         {
-           "name": "Gayathri",
-           "attend": false
-         },
-         {
-           "name": "Ingar",
-           "attend": false
-         },
-         {
-           "name": "Mary",
-           "attend": false
-         },
-         {
-           "name": "Maha",
-           "attend": false
-         },
-         {
-           "name": "Erlend",
-           "attend": false
-         }
-       ]`;
+        ctx.body = "[\n         {\n           \"name\": \"Vinh\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Thomas\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Tahir\",\n           \"attend\": false \n         },\n         {\n           \"name\": \"Boushra\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Gayathri\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Ingar\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Mary\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Maha\",\n           \"attend\": false\n         },\n         {\n           \"name\": \"Erlend\",\n           \"attend\": false\n         }\n       ]";
     })
 app.use(players);
 
