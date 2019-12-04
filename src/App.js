@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
-import Frontpage from '../src/Frontpage/Frontpage';
-
+import logo from './BlueLogo.svg';
+import Frontpage from './Frontpage/Frontpage';
+import ApiPlayerResourceProvider from './ApiPlayerResourceProvider/ApiPlayerResourceProvider';
 
 function App() {
     return (

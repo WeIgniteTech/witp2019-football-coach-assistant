@@ -7,9 +7,10 @@ import Popup from "reactjs-popup";
 import ChoosePlayer from "../ChoosePlayer/choosePlayerModal";
 
 
+
 let style = {
-    height: 200,
-    width: 200,
+    height: 150,
+    width: 150,
     cursor: 'default',
     color: '#514713',
     borderRadius: 5,
@@ -65,7 +66,7 @@ let selectedStyle = {
 
 class DisplayPlayers extends React.Component {
 
-    static contextType = PlayerResourceContext;
+
 
     selectPlayer(e, key) {
         var selectedPlayers = this.state.selectedPlayers;
@@ -80,7 +81,7 @@ class DisplayPlayers extends React.Component {
     };
 
 
-    constructor(props) {
+    constructor(props) {      
         super(props);
         this.state = {
             playerList: new Array(), // not really need to initialise it here , just for the demo purposes .
@@ -131,6 +132,7 @@ class DisplayPlayers extends React.Component {
     }
 
     render() {
+
         return (
 
             <div>
@@ -142,6 +144,7 @@ class DisplayPlayers extends React.Component {
                 <AutoResponsive  {...this.getAutoResponsiveProps()}>
                     {this.renderItems(this.state.playerList)}
                 </AutoResponsive>
+
             </div>
         );
     }
