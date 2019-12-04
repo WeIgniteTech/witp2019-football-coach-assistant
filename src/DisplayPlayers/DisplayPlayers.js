@@ -1,8 +1,11 @@
-import React,{useContext} from 'react'
+import React, {useContext} from 'react'
 import ReactDOM from 'react-dom';
 import AutoResponsive from 'autoresponsive-react'
-import {PlayerResourceContext} from '../ApiPlayerResourceProvider/ApiPlayerResourceProvider'
 import Players from '../Players.json'
+import PlayerResourceContext from "../ApiPlayerResourceProvider/ApiPlayerResourceProvider";
+import Connect from "../Connect/Connect";
+import axios from "axios";
+
 
 let style = {
     height: 200,
@@ -43,8 +46,8 @@ let selectedStyle = {
 
 class DisplayPlayers extends React.Component {
 
-   static PlayersContext = PlayerResourceContext;
-   static playerResource=PlayerResourceContext
+    static contextType = PlayerResourceContext;
+
     selectPlayer(e, key) {
         var selectedPlayers = this.state.selectedPlayers;
         if (selectedPlayers.has(key)) {
@@ -59,10 +62,10 @@ class DisplayPlayers extends React.Component {
 
 
     constructor(props) {
-        
-      super(props);
+
+        super(props);
         this.state = {
-           playerList:Players,
+            playerList: Players,
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
@@ -73,13 +76,15 @@ class DisplayPlayers extends React.Component {
     }
 
     componentDidMount() {
-        
+
         window.addEventListener('resize', () => {
             this.setState({
-                containerWidth: ReactDOM.findDOMNode(this.refs.container).clientWidth-ReactDOM.findDOMNode(this.refs.container).clientWidth*0.4
+                containerWidth: ReactDOM.findDOMNode(this.refs.container).clientWidth - ReactDOM.findDOMNode(this.refs.container).clientWidth * 0.4
             });
         }, false);
+        this.loadPlayers();
     }
+
 
     getAutoResponsiveProps() {
         return {
@@ -97,27 +102,29 @@ class DisplayPlayers extends React.Component {
         };
     }
 
-    render() {
-          
-        return (
-            <div>
-               
-                
-                <PlayerResourceContext.Consumer ref="container">  
-                {value=>
-                (<AutoResponsive  {...this.getAutoResponsiveProps()}>
-                { this.renderItems(value)}
-                </AutoResponsive>)
-                }
-                </PlayerResourceContext.Consumer>
-                              
-            </div>
-        );
+    async loadPlayers() {
+        const promise = await axios.get("http://localhost:5000/api/players");
+        const status = promise.status;
+        if (status === 200) {
+            const data = promise.data;
+            this.setState({playerList: data});
+        }
     }
 
+    render() {
+        return (
+            <div>
+                <AutoResponsive  {...this.getAutoResponsiveProps()}>
+                    {this.renderItems(this.state.playerList)}
+                </AutoResponsive>
+            </div>
+        );
+
+    }
 
     renderItems(pp) {
-         return pp.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
+        console.log(pp);
+        return pp.map(i => this.renderItem(i, this.state.selectedPlayers.has(i.name) ? selectedStyle : style));
     }
 
     renderItem(i, styleToUse) {
@@ -128,5 +135,6 @@ class DisplayPlayers extends React.Component {
         )
     }
 }
+
 
 export default DisplayPlayers

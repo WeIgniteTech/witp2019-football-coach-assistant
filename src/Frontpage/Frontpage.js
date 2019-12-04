@@ -1,21 +1,16 @@
 import * as React from 'react';
 import './Frontpage.css';
 import DisplayPlayers from '../DisplayPlayers/DisplayPlayers';
-import Connect from "../Connect/Connect"
 
-const Frontpage = (props) => {
-let players=Connect("http://localhost:3000/api/players");
+const Frontpage = (props) => (
 
-    return (
         <div className="Frontpage">
-        <header className="Frontpage-header">
-          <h1>Football Coach Assistant</h1>
-          {/* <img src={props.logo} className="Frontpage-logo" alt="logo" /> */}
-        </header>
+            <header className="Frontpage-header">
+                <h1>Football Coach Assistant</h1>
+            </header>
+            <DisplayPlayers/>
+        </div>
 
-          <DisplayPlayers Players={players}/>
-      </div>
-  );
-};
-
+);
 export default Frontpage;
+
