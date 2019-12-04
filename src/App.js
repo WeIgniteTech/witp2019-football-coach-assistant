@@ -1,16 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './BlueLogo.svg';
 import Frontpage from './Frontpage/Frontpage';
-import ApiDateResourceProvider from './ApiDateResourceProvider/ApiDateResourceProvider';
+import ApiPlayerResourceProvider from './ApiPlayerResourceProvider/ApiPlayerResourceProvider';
 
 function App() {
-  return (
-    <div>
-        <ApiDateResourceProvider>
-          <Frontpage logo={logo}/>
-        </ApiDateResourceProvider>
-    </div>
-  );
+    return (
+            <div>
+                <Frontpage logo={logo}/>
+            </div>
+    );
 }
 
 export default App;

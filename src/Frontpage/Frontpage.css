@@ -2,9 +2,9 @@
   text-align: center;
 }
 
-.Frontpage-logo {
-  height: 40vmin;
-}
+ .Frontpage-logo {
+  height: 20vmin;
+} 
 
 .Canvas-Styling{
   text-align: left;
@@ -21,3 +21,4 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+

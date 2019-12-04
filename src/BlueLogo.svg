@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="229px" height="163px" viewBox="0 0 229 163" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="63.9197716%" y1="-15.1977539%" x2="-30.9795673%" y2="81.6970825%" id="linearGradient-1">
+            <stop stop-color="#065A89" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logoFace-Invertert" transform="translate(-39.000000, -87.000000)">
+            <g id="Group" transform="translate(39.000000, 32.000000)">
+                <text id="WIT" font-family="Courier" font-size="90" font-weight="normal" fill="#065A89">
+                    <tspan x="64.4585253" y="217.958525">WIT</tspan>
+                </text>
+                <path d="M190.055822,27.7458739 C77.6296941,144.129283 22.6370183,203.541377 25.0777951,205.982153 C27.518572,208.42293 86.9306651,153.430254 203.314075,41.0041261 C206.97524,37.3429608 206.97524,31.4070392 203.314075,27.7458739 C199.652909,24.0847087 193.716988,24.0847087 190.055822,27.7458739 Z" id="Line-17-Copy-15" fill="url(#linearGradient-1)" fill-rule="nonzero" transform="translate(115.529974, 115.529974) rotate(19.000000) translate(-115.529974, -115.529974) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

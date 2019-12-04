@@ -2,13 +2,13 @@ const Koa = require('koa');
 const BodyParser = require("koa-bodyparser");
 const Logger = require("koa-logger");
 const HttpStatus = require("http-status");
-
+const cors = require('koa-cors');
 const serve = require("koa-static");
 const router = require('koa-route');
 const mount = require("koa-mount");
 
 const app = new Koa();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Airtable credentials
 const Airtable = require('airtable');
@@ -24,7 +24,7 @@ app.use(mount("/", static_pages));
 
 app.use(BodyParser());
 app.use(Logger());
-
+app.use(cors());
 
 /* 
   This is the API / dynamic part of the application
@@ -100,7 +100,6 @@ function getPlayers() {
     });
   });
 }
-
 
 /*
  This is where we start the server 
