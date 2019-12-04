@@ -64,14 +64,13 @@ app.use(now);
 app.use(router.get('/api/players', async function (ctx) {
   try {
     const records = await getPlayers();
-    console.log('Retrieved this nb of records: ', records.length);
+    console.log(`Retrieved ${records.length} records`);
 
     let playersList = [];
     records.forEach((record) => {
       playersList.push({
         "name": record.fields.Name,
-        "position": record.fields.Position,
-        "attending": false
+        "attend": false
       });
     });
 
