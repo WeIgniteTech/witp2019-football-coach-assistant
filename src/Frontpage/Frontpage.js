@@ -18,6 +18,6 @@ const Frontpage = (props) => {
   );
 };
 
-);
+
 export default Frontpage;
 
