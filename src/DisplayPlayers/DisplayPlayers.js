@@ -134,8 +134,8 @@ class DisplayPlayers extends React.Component {
         return (
 
             <div>
-                <div className="btn-group">
-                    <Popup modal trigger={<button type="button" key="5"  className="btn btn-default" style={buttonStyle}>Team Distribution</button>}>
+                <div>
+                    <Popup modal trigger={<button type="button" key="5"  className="btn btn-default" style={buttonStyle} >Team Distribution</button>}>
                         {close => <ChoosePlayer close={close} attendingPlayers={this.state.selectedPlayers} />}
                     </Popup>
                 </div>
@@ -159,20 +159,6 @@ class DisplayPlayers extends React.Component {
         )
     }
 
-    getRandom(attendingPlayers, teamSize, selectedPlayers) {
-        var result = new Array(teamSize),
-            length = attendingPlayers.length,
-            taken = new Array(length);
-        if (teamSize > length) {
-            console.log("getRandom: more elements taken than available");
-        }
-        while (teamSize--) {
-            var x = Math.floor(Math.random() * length);
-            result[teamSize] = attendingPlayers[x in taken ? taken[x] : x];
-            taken[x] = --length in taken ? taken[length] : length;
-        }
-        return result;
-    }
 }
 
 

@@ -1,178 +1,164 @@
-import React, { Component } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React from 'react'
+import Board from 'react-trello'
 
-// fake data generator
-const getItems = (count, offset = 0) =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k + offset}`,
-        content: `item ${k + offset}`
-    }));
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
+let buttonStyle = {
+    height: 50,
+    width: 150,
+    cursor: 'default',
+    color: '#0000ff',
+    borderRadius: 5,
+    boxShadow: '0 1px 0 rgba(255,255,255,0.5) inset',
+    backgroundColor: '#a28f27',
+    borderColor: '#796b1d',
+    fontSize: '10px',
+    lineHeight: '10px',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadow: '1px 1px 0px #ab9a3c',
+    userSelect: 'RED',
+    margin: '10px'
 };
 
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
+var playerCards=new Array();
+const CustomCard = props => {
+    return (
+        <div>
+            <header
+                style={{
+                    borderBottom: '1px solid #eee', paddingBottom: 6, marginBottom: 10,
+                    display: 'flex', flexDirection: 'row', justifyContent: 'space-between',
+                    color: props.cardColor
+                }}
+            >
+                <div style={{fontSize: 14, fontWeight: 'bold'}}>{props.name}</div>
+                <div style={{fontSize: 11}}>{props.dueOn}</div>
+            </header>
+            <div style={{fontSize: 12, color: '#BD3B36'}}>
+                <div style={{color: '#4C4C4C', fontWeight: 'bold'}}>{props.subTitle}</div>
+                <div style={{padding: '5px 0px'}}><i>{props.body}</i></div>
+                <div style={{
+                    marginTop: 10,
+                    textAlign: 'center',
+                    color: props.cardColor,
+                    fontSize: 15,
+                    fontWeight: 'bold'
+                }}>
+                    {props.escalationText}
+                </div>
+            </div>
+        </div>
+    )
+}
+export default class PlayerDistributionList extends React.Component {
 
-    destClone.splice(droppableDestination.index, 0, removed);
 
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-
-    return result;
-};
-
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
-
-    // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
-
-    // styles we need to apply on draggables
-    ...draggableStyle
-});
-
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    padding: grid,
-    width: 250
-});
-
-class PlayerDistributionList extends Component {
-    state = {
-        items: getItems(10),
-        selected: getItems(5, 10)
-    };
-
-    /**
-     * A semi-generic way to handle multiple lists. Matches
-     * the IDs of the droppable container to the names of the
-     * source arrays stored in the state.
-     */
-    id2List = {
-        droppable: 'items',
-        droppable2: 'selected'
-    };
-
-    getList = id => this.state[this.id2List[id]];
-
-    onDragEnd = result => {
-        const { source, destination } = result;
-
-        // dropped outside the list
-        if (!destination) {
-            return;
-        }
-
-        if (source.droppableId === destination.droppableId) {
-            const items = reorder(
-                this.getList(source.droppableId),
-                source.index,
-                destination.index
-            );
-
-            let state = { items };
-
-            if (source.droppableId === 'droppable2') {
-                state = { selected: items };
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: {
+                lanes: [
+                    {
+                        id: 'lane1',
+                        title: 'Attending Players',
+                        cards: this.getAttendingPlayerCards(this.props.attendingPlayers)
+                    }
+                ]
             }
 
-            this.setState(state);
-        } else {
-            const result = move(
-                this.getList(source.droppableId),
-                this.getList(destination.droppableId),
-                source,
-                destination
-            );
+        };
+    }
 
-            this.setState({
-                items: result.droppable,
-                selected: result.droppable2
-            });
+    getAttendingPlayerCards(attendingPlayers) {
+        var attendingPlayerCards = [];
+        const cardColor = '#BD3B36',
+            cardStyle = {borderRadius: 6, boxShadow: '0 0 6px 1px #BD3B36', marginBottom: 15};
+        console.log(attendingPlayers);
+        Array.from(attendingPlayers).map(player => {
+            attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
+        });
+        console.log("attending players", attendingPlayerCards);
+        return attendingPlayerCards;
+    }
+
+    getTeamLines(lineNumber, players){
+       var lines= ({id:'line'+lineNumber, tittle:'line'+lineNumber, cards:this.getPlayerCards(players)})
+        return lines;
+    }
+
+    getPlayerCards(players){
+        var attendingPlayerCards = [];
+        const cardColor = '#BD3B36',
+            cardStyle = {borderRadius: 6, boxShadow: '0 0 6px 1px #BD3B36', marginBottom: 15};
+        console.log(players);
+        players.map(player => {
+            attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
+        });
+        console.log("attending players", attendingPlayerCards);
+        return attendingPlayerCards;
+    }
+
+    distributePlayers(e, teamSize) {
+     // Depending on the Team Size , set number of lines .
+        console.log("in distributePlayers ");
+        var attendingPlayers2=Array.from(this.props.attendingPlayers);
+        var selectedPlayers = new Array();
+        var lines= new Array();
+        var alreadySelectedPlayers= new Array();
+        var numberOfLines =Math.floor(attendingPlayers2.length/teamSize)
+        console.log("numberofLines", numberOfLines);
+        if(numberOfLines>=0){
+            console.log("numberofLines greater than zero", numberOfLines);
+            var selectedPlayers2 = this.getRandom(attendingPlayers2, teamSize, alreadySelectedPlayers);
+           Array.prototype.push.apply(alreadySelectedPlayers,selectedPlayers2);
+            console.log("selectedPlayers", selectedPlayers2)
+            lines.push(this.getTeamLines(numberOfLines,selectedPlayers2));
+            while (numberOfLines--){
+                console.log("in While loop", numberOfLines);
+                var remainingPlayers =new Array();
+                attendingPlayers2.map(player=> {
+                    if(!alreadySelectedPlayers.includes(player)){
+                        remainingPlayers.push(player)
+                    }
+                })
+                var choosenPlayers = this.getRandom(remainingPlayers,teamSize, alreadySelectedPlayers);
+                Array.prototype.push.apply(alreadySelectedPlayers,choosenPlayers);
+                lines.push( this.getTeamLines(numberOfLines,choosenPlayers));
+
+            }
         }
-    };
+        this.setState({
+            data:{lanes:lines}
+        })
 
-    // Normally you would want to split things out into separate components.
-    // But in this example everything is just done in one place for simplicity
+    }
+    getRandom(attendingPlayers, teamSize, alreadySelectedPlayers) {
+        var result = new Set();
+        while(teamSize--){
+
+            var randomItem = attendingPlayers[Math.floor(Math.random()*attendingPlayers.length)];
+            if(alreadySelectedPlayers.includes(randomItem)){
+                teamSize++;
+            }else{
+            result.add(randomItem);
+            }
+        }
+         console.log("Random players", result);
+        return Array.from(result);
+    }
     render() {
         return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {this.state.items.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}>
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                <Droppable droppableId="droppable2">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {this.state.selected.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}>
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-        );
+            <div>
+                <div className="btn-group">
+                    <button type="button" key="3"  onClick={event => this.distributePlayers(event, 3)} className="btn btn-default" style={buttonStyle}>3 member Teams
+                    </button>
+                    <button type="button" key="5" className="btn btn-default" style={buttonStyle} onClick={event => this.distributePlayers(event, 5)}>5 Member Teams
+                    </button>
+                </div>
+                <Board data={this.state.data} customCardLayout>
+                    <CustomCard/>
+                </Board>
+            </div>
+        )
     }
 }
-export default PlayerDistributionList
