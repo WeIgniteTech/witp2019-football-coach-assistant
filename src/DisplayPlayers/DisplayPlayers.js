@@ -1,9 +1,7 @@
 import React, {useContext} from 'react'
 import ReactDOM from 'react-dom';
 import AutoResponsive from 'autoresponsive-react'
-import Players from '../Players.json'
 import PlayerResourceContext from "../ApiPlayerResourceProvider/ApiPlayerResourceProvider";
-import Connect from "../Connect/Connect";
 import axios from "axios";
 
 
@@ -62,10 +60,9 @@ class DisplayPlayers extends React.Component {
 
 
     constructor(props) {
-
         super(props);
         this.state = {
-            playerList: Players,
+            playerList: new Array(), // not really need to initialise it here , just for the demo purposes .
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
