@@ -5,6 +5,7 @@ import PlayerResourceContext from "../ApiPlayerResourceProvider/ApiPlayerResourc
 import axios from "axios";
 import Popup from "reactjs-popup";
 import ChoosePlayer from "../ChoosePlayer/choosePlayerModal";
+import "../index.css";
 
 
 let style = {
@@ -29,10 +30,10 @@ let buttonStyle = {
     height: 50,
     width: 150,
     cursor: 'default',
-    color: '#0000ff',
+    color: '#FFFFFF',
     borderRadius: 5,
     boxShadow: '0 1px 0 rgba(255,255,255,0.5) inset',
-    backgroundColor: '#a28f27',
+    backgroundColor: '#1a1300',
     borderColor: '#796b1d',
     fontSize: '10px',
     lineHeight: '10px',
@@ -87,20 +88,25 @@ class DisplayPlayers extends React.Component {
             itemMargin: 10,
             horizontalDirection: 'left',
             verticalDirection: 'top',
-            containerWidth: '800',
             selectedPlayers: new Set(),
             teams: new Array()
+
         };
         this.frame = 30;
     }
 
+
     componentDidMount() {
 
         window.addEventListener('resize', () => {
+
             this.setState({
-                containerWidth: ReactDOM.findDOMNode(this.refs.container).clientWidth - ReactDOM.findDOMNode(this.refs.container).clientWidth * 0.4
+                containerWidth: (ReactDOM.findDOMNode(this.refs.container).clientWidth - ReactDOM.findDOMNode(this.refs.container).clientWidth) * 0.4
             });
         }, false);
+        this.setState({
+            containerWidth: (ReactDOM.findDOMNode(this.refs.container).clientWidth - ReactDOM.findDOMNode(this.refs.container).clientWidth) * 0.2
+        });
         this.loadPlayers();
     }
 
@@ -130,17 +136,28 @@ class DisplayPlayers extends React.Component {
         }
     }
 
+    verifyPlayers(event){
+      if(this.state.selectedPlayers.size==0){
+          this.setState({
+              errorMsg:"Please select attaending "
+          })
+      }
+    }
     render() {
         return (
             <div>
                 <div>
-                    <Popup modal trigger={<button type="button" key="5"  className="btn btn-default" style={buttonStyle} >Team Distribution</button>}>
+                    <Popup contentStyle={{width:90+'%', height:80+'%'}} modal trigger={<button type="button" key="5"  className="modal" style={buttonStyle} >Team Distribution</button>}>
                         {close => <ChoosePlayer close={close} attendingPlayers={this.state.selectedPlayers} />}
                     </Popup>
                 </div>
-                <AutoResponsive ref="container" {...this.getAutoResponsiveProps()}>
+                <div>{this.state.errorMsg ? <span
+                    style={{fontSize: 14, fontWeight: 'bold', color: 'RED'}}>{this.state.errorMsg}</span> : null}</div>
+                <div  className="displayPlayers">
+                <AutoResponsive ref="container" {...this.getAutoResponsiveProps()} >
                     {this.renderItems(this.state.playerList)}
                 </AutoResponsive>
+                </div>
             </div>
         );
     }

@@ -1,23 +1,69 @@
 import React from 'react'
 import Board from 'react-trello'
+import '../index.css'
 
-let teamNames= ['Black Eagles',
-    'Banana Slugs',
-    'Preachers',
-    'Fighting Cardinals',
-    'The Predators',
-    'Razorbacks',
-    'Rebels',
-    'Fighting Crusaders'];
+let teamNames = [{
+    name: "Black Eagles",
+    color: "#FF0000",
+    cardColor: "#FFB3B3"
+},
+    {
+        name: "Banana Slugs",
+        color: "#FFA500",
+        cardColor: "#FFE4B3"
+    },
+    {
+        name: "Preachers",
+        color: "#4d3319",
+        cardColor: "#ecd9c6"
+    },
+    {
+        name: "Fighting Cardinals",
+        color: "#660029",
+        cardColor: "#ff80b3"
+    },
+    {
+        name: "The Predators",
+        color: "#0000FF",
+        cardColor: "#B3B3FF"
+    },
+    {
+        name: "Razorbacks",
+        color: "#800080",
+        cardColor: "#FFB3FF"
+    },
+    {
+        name: "Rebels",
+        color: "#A52A2A",
+        cardColor: "#EFC2C2"
+    },
+    {
+        name: "Fighting Crusaders",
+        color: "#4B0082",
+        cardColor: "#DFB3FF"
+    }];
+
+let remainingPlayersTeamDetails =
+    {
+        name: "Remaining Players",
+        color: "#008000",
+        cardColor: "#B3FFB3"
+    }
+let attendingPlayersTeamDetails =
+    {
+        name: "Attending Players",
+        color: "#003380",
+        cardColor: "#80b3ff"
+    }
 
 let buttonStyle = {
     height: 50,
     width: 150,
     cursor: 'default',
-    color: '#0000ff',
+    color: '#FFFFFF',
     borderRadius: 5,
     boxShadow: '0 1px 0 rgba(255,255,255,0.5) inset',
-    backgroundColor: '#a28f27',
+    backgroundColor: '#1a1300',
     borderColor: '#796b1d',
     fontSize: '10px',
     lineHeight: '10px',
@@ -27,48 +73,20 @@ let buttonStyle = {
     userSelect: 'RED',
     margin: '10px'
 };
+let boardStyle = {
+    width: 95 + '%',
+    backgroundColor: 'white',
+    height: 90 + '%'
 
-const CustomCard = props => {
-    return (
-        <div>
-            <header
-                style={{
-                    borderBottom: '1px solid #eee', paddingBottom: 6, marginBottom: 10,
-                    display: 'flex', flexDirection: 'row', justifyContent: 'space-between',
-                    color: props.cardColor
-                }}
-            >
-                <div style={{fontSize: 14, fontWeight: 'bold'}}>{props.name}</div>
-                <div style={{fontSize: 11}}>{props.dueOn}</div>
-            </header>
-            <div style={{fontSize: 12, color: '#BD3B36'}}>
-                <div style={{color: '#4C4C4C', fontWeight: 'bold'}}>{props.subTitle}</div>
-                <div style={{padding: '5px 0px'}}><i>{props.body}</i></div>
-                <div style={{
-                    marginTop: 10,
-                    textAlign: 'center',
-                    color: props.cardColor,
-                    fontSize: 15,
-                    fontWeight: 'bold'
-                }}>
-                    {props.escalationText}
-                </div>
-            </div>
-        </div>
-    )
+
 }
-
 export default class PlayerDistributionList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: {
                 lanes: [
-                    {
-                        id: 'Attending Players',
-                        title: 'Attending Players',
-                        cards: this.getAttendingPlayerCards(this.props.attendingPlayers)
-                    }
+                    this.getTeamLines(attendingPlayersTeamDetails, Array.from(this.props.attendingPlayers))
                 ]
             },
             errorMsg: ""
@@ -76,33 +94,35 @@ export default class PlayerDistributionList extends React.Component {
         };
     }
 
-    getAttendingPlayerCards(attendingPlayers) {
-        var attendingPlayerCards = [];
-        const cardColor = '#BD3B36',
-            cardStyle = {borderRadius: 6, boxShadow: '0 0 6px 1px #BD3B36', marginBottom: 15};
-        Array.from(attendingPlayers).map(player => {
-            attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
+    getTeamLines(teamDetails, players) {
+        var lines = ({
+            id: 'Team' + teamDetails.name,
+            title: teamDetails.name,
+            cards: this.getPlayerCards(players, teamDetails.cardColor),
+            style: {backgroundColor: teamDetails.color, color: '#FFFFFF', textAlign: 'center'}
         });
-        return attendingPlayerCards;
-    }
-
-    getTeamLines(lineNumber, players) {
-        var lines = ({id: 'Team' + lineNumber, title: lineNumber, cards: this.getPlayerCards(players)});
         return lines;
     }
 
-    getPlayerCards(players) {
+    getPlayerCards(players, cardBackGroundColor) {
         var attendingPlayerCards = [];
-        const cardColor = '#BD3B36',
-            cardStyle = {borderRadius: 6, boxShadow: '0 0 6px 1px #BD3B36', marginBottom: 15};
         players.map(player => {
-            attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
+            attendingPlayerCards.push({
+                id: player,
+                title: player,
+                style: {
+                    borderRadius: 6,
+                    boxShadow: '0 0 6px 1px #BD3B36',
+                    marginBottom: 15,
+                    backgroundColor: cardBackGroundColor
+                }
+            })
         });
         return attendingPlayerCards;
     }
 
-    getRandomTeamNames(numberOfTeams){
-        let result=new Set();
+    getRandomTeamNames(numberOfTeams) {
+        let result = new Set();
         while (numberOfTeams) {
             let randomItem = teamNames[Math.floor(Math.random() * teamNames.length)];
             if (!result.has(randomItem)) {
@@ -125,16 +145,14 @@ export default class PlayerDistributionList extends React.Component {
         let selectedPlayers = this.getRandom(attendingPlayers, teamSize);
 
         if (selectedPlayers.length == 0) {
-            this.setState({errorMsg: 'Chosen Team size ' + teamSize + ', is more than attending Players ' + attendingPlayers.length,
+            this.setState({
+                errorMsg: 'Chosen Team size ' + teamSize + ', is more than attending Players ' + attendingPlayers.length,
                 data: {
                     lanes: [
-                        {
-                            id: 'Attending Players',
-                            title: 'Attending Players',
-                            cards: this.getAttendingPlayerCards(attendingPlayers)
-                        }
+                        this.getTeamLines(attendingPlayersTeamDetails, attendingPlayers)
                     ]
-                }});
+                }
+            });
             return;
         }
 
@@ -143,47 +161,42 @@ export default class PlayerDistributionList extends React.Component {
             alreadySelectedPlayers.add(player)
         });
 
-        let teamNames= this.getRandomTeamNames(numberOfLines);
+        let teamNames = this.getRandomTeamNames(numberOfLines);
         lanes.push(this.getTeamLines(teamNames[0], selectedPlayers));
 
-        if(attendingPlayers.length-selectedPlayers.length < teamSize){
-            console.log('in If condition for remaining players ')
-            var remainingPlayers=[];
-            attendingPlayers.map(player => {
-                if (!alreadySelectedPlayers.has(player)) {
-                    remainingPlayers.push(player)
-                }
-
-            })
-            lanes.push(this.getTeamLines('Remaining Players', remainingPlayers));
-        }
         numberOfLines = numberOfLines - 1;
-       while (numberOfLines > 0) {
-           let teamName= teamNames[numberOfLines];
-           console.log("in While loop", numberOfLines);
+        while (numberOfLines > 0) {
+            let teamName = teamNames[numberOfLines];
+            console.log("in While loop", numberOfLines);
             let remainingPlayers = [];
-             //Find remaining players, based on based on the attending players , and already selected players.
+            //Find remaining players, based on based on the attending players , and already selected players.
             attendingPlayers.map(player => {
                 if (!alreadySelectedPlayers.has(player)) {
                     remainingPlayers.push(player)
                 }
             })
-             if(remainingPlayers.length!==0 && teamSize > remainingPlayers.length){
-                 // Remaining players won't able to form a team on their own . These are left as unselected Players
-                 lanes.push(this.getTeamLines('Remaining Players', remainingPlayers));
-                 break;
-             }
             let chosenPlayers = this.getRandom(remainingPlayers, teamSize);
-
-            chosenPlayers.map(player => {
-                alreadySelectedPlayers.add(player)
-            });
-
-           lanes.push(this.getTeamLines(teamName, chosenPlayers));
-           console.log("lines", lanes);
-           numberOfLines = numberOfLines - 1;
+            if (chosenPlayers.length > 0) {
+                chosenPlayers.map(player => {
+                    alreadySelectedPlayers.add(player)
+                });
+                lanes.push(this.getTeamLines(teamName, chosenPlayers));
+            }
+            console.log("lines", lanes);
+            numberOfLines = numberOfLines - 1;
         }
         console.log(lanes);
+        if (attendingPlayers.length > selectedPlayers.length) {
+            console.log('in If condition for remaining players ')
+            var remainingPlayers = [];
+            attendingPlayers.map(player => {
+                if (!alreadySelectedPlayers.has(player)) {
+                    remainingPlayers.push(player)
+                }
+
+            })
+            lanes.push(this.getTeamLines(remainingPlayersTeamDetails, remainingPlayers));
+        }
         this.setState({
             data: {lanes: lanes}
         })
@@ -221,9 +234,7 @@ export default class PlayerDistributionList extends React.Component {
                 </div>
                 <div>{this.state.errorMsg ? <span
                     style={{fontSize: 14, fontWeight: 'bold', color: 'RED'}}>{this.state.errorMsg}</span> : null}</div>
-                <Board data={this.state.data} customCardLayout>
-                    <CustomCard/>
-                </Board>
+                <Board data={this.state.data} draggable style={boardStyle}/>
             </div>
         )
     }
