@@ -20,7 +20,6 @@ let buttonStyle = {
     margin: '10px'
 };
 
-var playerCards=new Array();
 const CustomCard = props => {
     return (
         <div>
@@ -50,8 +49,8 @@ const CustomCard = props => {
         </div>
     )
 }
-export default class PlayerDistributionList extends React.Component {
 
+export default class PlayerDistributionList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -59,12 +58,13 @@ export default class PlayerDistributionList extends React.Component {
             data: {
                 lanes: [
                     {
-                        id: 'lane1',
+                        id: 'Attending Players',
                         title: 'Attending Players',
                         cards: this.getAttendingPlayerCards(this.props.attendingPlayers)
                     }
                 ]
-            }
+            },
+            errorMsg: ""
 
         };
     }
@@ -73,88 +73,117 @@ export default class PlayerDistributionList extends React.Component {
         var attendingPlayerCards = [];
         const cardColor = '#BD3B36',
             cardStyle = {borderRadius: 6, boxShadow: '0 0 6px 1px #BD3B36', marginBottom: 15};
-        console.log(attendingPlayers);
         Array.from(attendingPlayers).map(player => {
             attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
         });
-        console.log("attending players", attendingPlayerCards);
         return attendingPlayerCards;
     }
 
-    getTeamLines(lineNumber, players){
-       var lines= ({id:'line'+lineNumber, tittle:'line'+lineNumber, cards:this.getPlayerCards(players)})
+    getTeamLines(lineNumber, players) {
+        var lines = ({id: 'Team' + lineNumber, title: lineNumber, cards: this.getPlayerCards(players)})
         return lines;
     }
 
-    getPlayerCards(players){
+    getPlayerCards(players) {
         var attendingPlayerCards = [];
         const cardColor = '#BD3B36',
             cardStyle = {borderRadius: 6, boxShadow: '0 0 6px 1px #BD3B36', marginBottom: 15};
-        console.log(players);
         players.map(player => {
             attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
         });
-        console.log("attending players", attendingPlayerCards);
         return attendingPlayerCards;
     }
 
     distributePlayers(e, teamSize) {
-     // Depending on the Team Size , set number of lines .
-        console.log("in distributePlayers ");
-        var attendingPlayers2=Array.from(this.props.attendingPlayers);
-        var selectedPlayers = new Array();
-        var lines= new Array();
-        var alreadySelectedPlayers= new Array();
-        var numberOfLines =Math.floor(attendingPlayers2.length/teamSize)
-        console.log("numberofLines", numberOfLines);
-        if(numberOfLines>=0){
-            console.log("numberofLines greater than zero", numberOfLines);
-            var selectedPlayers2 = this.getRandom(attendingPlayers2, teamSize, alreadySelectedPlayers);
-           Array.prototype.push.apply(alreadySelectedPlayers,selectedPlayers2);
-            console.log("selectedPlayers", selectedPlayers2)
-            lines.push(this.getTeamLines(numberOfLines,selectedPlayers2));
-            while (numberOfLines--){
-                console.log("in While loop", numberOfLines);
-                var remainingPlayers =new Array();
-                attendingPlayers2.map(player=> {
-                    if(!alreadySelectedPlayers.includes(player)){
-                        remainingPlayers.push(player)
-                    }
-                })
-                var choosenPlayers = this.getRandom(remainingPlayers,teamSize, alreadySelectedPlayers);
-                Array.prototype.push.apply(alreadySelectedPlayers,choosenPlayers);
-                lines.push( this.getTeamLines(numberOfLines,choosenPlayers));
+        this.setState({errorMsg: null});
+        let attendingPlayers = Array.from(this.props.attendingPlayers);
+        let lanes = [];
+        let numberOfLines = Math.floor(attendingPlayers.length / teamSize);
+        console.log("", numberOfLines);
+        let alreadySelectedPlayers = new Set();
+        // Choose players in random depending on the team size
+        let selectedPlayers = this.getRandom(attendingPlayers, teamSize);
 
-            }
+        if (selectedPlayers.length == 0) {
+            this.setState({errorMsg: 'Chosen Team size ' + teamSize + ', is more than attending Players ' + attendingPlayers.length,
+                data: {
+                    lanes: [
+                        {
+                            id: 'Attending Players',
+                            title: 'Attending Players',
+                            cards: this.getAttendingPlayerCards(attendingPlayers)
+                        }
+                    ]
+                }});
+            return;
         }
+
+        //This Step will help us to identify remaining players, after the first selection .
+        selectedPlayers.map(player => {
+            alreadySelectedPlayers.add(player)
+        });
+       lanes.push(this.getTeamLines('Team 1', selectedPlayers));
+       while (numberOfLines > 0) {
+         console.log("in While loop", numberOfLines);
+            let remainingPlayers = [];
+             //Find remaining players, based on based on the attending players , and already selected players.
+            attendingPlayers.map(player => {
+                if (!alreadySelectedPlayers.has(player)) {
+                    remainingPlayers.push(player)
+                }
+            })
+             if(teamSize > remainingPlayers.length){
+                 // Remaining players won't able to form a team on their own . These are left as unselected Players
+                 lanes.push(this.getTeamLines('Remaining Players', remainingPlayers));
+                 break;
+             }
+            let chosenPlayers = this.getRandom(remainingPlayers, teamSize);
+
+            chosenPlayers.map(player => {
+                alreadySelectedPlayers.add(player)
+            });
+            lanes.push(this.getTeamLines(numberOfLines, chosenPlayers));
+            console.log("lines", lanes);
+            numberOfLines = numberOfLines - 1;
+        }
+        console.log(lanes);
         this.setState({
-            data:{lanes:lines}
+            data: {lanes: lanes}
         })
 
     }
-    getRandom(attendingPlayers, teamSize, alreadySelectedPlayers) {
-        var result = new Set();
-        while(teamSize--){
 
-            var randomItem = attendingPlayers[Math.floor(Math.random()*attendingPlayers.length)];
-            if(alreadySelectedPlayers.includes(randomItem)){
-                teamSize++;
-            }else{
-            result.add(randomItem);
+    getRandom(attendingPlayers, teamSize) {
+        var result = new Set();
+        if (teamSize > attendingPlayers.length) {
+            return [];
+        }
+        while (teamSize) {
+            var randomItem = attendingPlayers[Math.floor(Math.random() * attendingPlayers.length)];
+            console.log("random Item", randomItem)
+            if (!result.has(randomItem)) {
+                console.log("itemFound", randomItem)
+                teamSize = teamSize - 1;
+                result.add(randomItem);
             }
         }
-         console.log("Random players", result);
         return Array.from(result);
     }
+
+
     render() {
         return (
             <div>
                 <div className="btn-group">
-                    <button type="button" key="3"  onClick={event => this.distributePlayers(event, 3)} className="btn btn-default" style={buttonStyle}>3 member Teams
+                    <button type="button" key="3" onClick={event => this.distributePlayers(event, 3)}
+                            className="btn btn-default" style={buttonStyle}>3 member Teams
                     </button>
-                    <button type="button" key="5" className="btn btn-default" style={buttonStyle} onClick={event => this.distributePlayers(event, 5)}>5 Member Teams
+                    <button type="button" key="5" className="btn btn-default" style={buttonStyle}
+                            onClick={event => this.distributePlayers(event, 5)}>5 Member Teams
                     </button>
                 </div>
+                <div>{this.state.errorMsg ? <span
+                    style={{fontSize: 14, fontWeight: 'bold', color: 'RED'}}>{this.state.errorMsg}</span> : null}</div>
                 <Board data={this.state.data} customCardLayout>
                     <CustomCard/>
                 </Board>
