@@ -132,14 +132,13 @@ class DisplayPlayers extends React.Component {
 
     render() {
         return (
-
             <div>
                 <div>
                     <Popup modal trigger={<button type="button" key="5"  className="btn btn-default" style={buttonStyle} >Team Distribution</button>}>
                         {close => <ChoosePlayer close={close} attendingPlayers={this.state.selectedPlayers} />}
                     </Popup>
                 </div>
-                <AutoResponsive  {...this.getAutoResponsiveProps()}>
+                <AutoResponsive ref="container" {...this.getAutoResponsiveProps()}>
                     {this.renderItems(this.state.playerList)}
                 </AutoResponsive>
             </div>

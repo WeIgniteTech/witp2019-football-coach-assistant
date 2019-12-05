@@ -1,6 +1,14 @@
 import React from 'react'
 import Board from 'react-trello'
 
+let teamNames= ['Black Eagles',
+    'Banana Slugs',
+    'Preachers',
+    'Fighting Cardinals',
+    'The Predators',
+    'Razorbacks',
+    'Rebels',
+    'Fighting Crusaders'];
 
 let buttonStyle = {
     height: 50,
@@ -51,7 +59,6 @@ const CustomCard = props => {
 }
 
 export default class PlayerDistributionList extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -80,7 +87,7 @@ export default class PlayerDistributionList extends React.Component {
     }
 
     getTeamLines(lineNumber, players) {
-        var lines = ({id: 'Team' + lineNumber, title: lineNumber, cards: this.getPlayerCards(players)})
+        var lines = ({id: 'Team' + lineNumber, title: lineNumber, cards: this.getPlayerCards(players)});
         return lines;
     }
 
@@ -92,6 +99,19 @@ export default class PlayerDistributionList extends React.Component {
             attendingPlayerCards.push({id: player, title: player, cardColor: cardColor, cardStyle: cardStyle})
         });
         return attendingPlayerCards;
+    }
+
+    getRandomTeamNames(numberOfTeams){
+        let result=new Set();
+        while (numberOfTeams) {
+            let randomItem = teamNames[Math.floor(Math.random() * teamNames.length)];
+            if (!result.has(randomItem)) {
+                console.log("itemFound", randomItem)
+                numberOfTeams = numberOfTeams - 1;
+                result.add(randomItem);
+            }
+        }
+        return Array.from(result);
     }
 
     distributePlayers(e, teamSize) {
@@ -122,9 +142,25 @@ export default class PlayerDistributionList extends React.Component {
         selectedPlayers.map(player => {
             alreadySelectedPlayers.add(player)
         });
-       lanes.push(this.getTeamLines('Team 1', selectedPlayers));
+
+        let teamNames= this.getRandomTeamNames(numberOfLines);
+        lanes.push(this.getTeamLines(teamNames[0], selectedPlayers));
+
+        if(attendingPlayers.length-selectedPlayers.length < teamSize){
+            console.log('in If condition for remaining players ')
+            var remainingPlayers=[];
+            attendingPlayers.map(player => {
+                if (!alreadySelectedPlayers.has(player)) {
+                    remainingPlayers.push(player)
+                }
+
+            })
+            lanes.push(this.getTeamLines('Remaining Players', remainingPlayers));
+        }
+        numberOfLines = numberOfLines - 1;
        while (numberOfLines > 0) {
-         console.log("in While loop", numberOfLines);
+           let teamName= teamNames[numberOfLines];
+           console.log("in While loop", numberOfLines);
             let remainingPlayers = [];
              //Find remaining players, based on based on the attending players , and already selected players.
             attendingPlayers.map(player => {
@@ -132,7 +168,7 @@ export default class PlayerDistributionList extends React.Component {
                     remainingPlayers.push(player)
                 }
             })
-             if(teamSize > remainingPlayers.length){
+             if(remainingPlayers.length!==0 && teamSize > remainingPlayers.length){
                  // Remaining players won't able to form a team on their own . These are left as unselected Players
                  lanes.push(this.getTeamLines('Remaining Players', remainingPlayers));
                  break;
@@ -142,9 +178,10 @@ export default class PlayerDistributionList extends React.Component {
             chosenPlayers.map(player => {
                 alreadySelectedPlayers.add(player)
             });
-            lanes.push(this.getTeamLines(numberOfLines, chosenPlayers));
-            console.log("lines", lanes);
-            numberOfLines = numberOfLines - 1;
+
+           lanes.push(this.getTeamLines(teamName, chosenPlayers));
+           console.log("lines", lanes);
+           numberOfLines = numberOfLines - 1;
         }
         console.log(lanes);
         this.setState({
