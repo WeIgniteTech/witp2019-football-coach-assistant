@@ -1,6 +1,9 @@
 version: 2.1
 jobs:
   build:
+    branches:
+        only:
+          - deploy-to-heroku
     docker:
       - image: circleci/node:10.16.3
 
