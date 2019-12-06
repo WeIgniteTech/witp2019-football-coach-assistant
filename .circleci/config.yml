@@ -26,16 +26,3 @@ jobs:
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git deploy-to-heroku
 
-workflows:
-  version: 2.1
-  build_and_deploy:
-    jobs:
-      - build:
-      - approve-deployment:
-          type: approval
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
