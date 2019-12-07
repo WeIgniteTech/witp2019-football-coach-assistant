@@ -149,16 +149,18 @@ class DisplayPlayers extends React.Component {
         return (
             <div>
                 <div>
-                    <Popup contentStyle={{width:90+'%', height:80+'%'}} modal trigger={<button type="button" key="5"  className="modal" style={buttonStyle} >Team Distribution</button>}>
+                    <Popup contentStyle={{ width: 90 + '%', height: 80 + '%' }} modal trigger={<button type="button" key="5" className="modal" style={buttonStyle} >Team Distribution</button>}>
                         {close => <ChoosePlayer close={close} attendingPlayers={this.state.selectedPlayers} />}
                     </Popup>
                 </div>
                 <div>{this.state.errorMsg ? <span
-                    style={{fontSize: 14, fontWeight: 'bold', color: 'RED'}}>{this.state.errorMsg}</span> : null}</div>
-                <div  className="displayPlayers">
-                <AutoResponsive ref="container" {...this.getAutoResponsiveProps()} >
-                    {this.renderItems(this.state.playerList)}
-                </AutoResponsive>
+                    style={{ fontSize: 14, fontWeight: 'bold', color: 'RED' }}>{this.state.errorMsg}</span> : null}
+                </div>
+                <div className="displayPlayers">
+                    <AutoResponsive ref="container" {...this.getAutoResponsiveProps()} >
+                        {this.renderItems(this.state.playerList)}
+                    </AutoResponsive>
+                </div>
             </div>
         );
     }
