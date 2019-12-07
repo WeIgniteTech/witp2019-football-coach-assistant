@@ -14,17 +14,22 @@ code {
 
 .modal {
   font-size: 12px;
+  width: 100%;
+  height: 100%;
 }
 .modal > .header {
   width: 100%;
   border-bottom: 1px solid gray;
   font-size: 18px;
   text-align: center;
-  padding: 5px;
+
 }
 .modal > .content {
   width: 100%;
-  padding: 10px 5px;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-bottom: 2vh;
+  padding-top: 2vh;
 }
 .modal > .actions {
   margin: auto;
@@ -46,4 +51,14 @@ code {
   background: #ffffff;
   border-radius: 18px;
   border: 1px solid #cfcece;
+}
+.displayPlayers{
+  width: 80vw;
+  padding-left: 10vw;
+  padding-right: 10vw;
+}
+
+.board{
+  width: 95%;
+  background-color: white;
 }
