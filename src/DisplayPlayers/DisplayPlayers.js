@@ -8,9 +8,10 @@ import ChoosePlayer from "../ChoosePlayer/choosePlayerModal";
 import "../index.css";
 
 
+
 let style = {
-    height: 200,
-    width: 200,
+    height: 150,
+    width: 150,
     cursor: 'default',
     color: '#514713',
     borderRadius: 5,
@@ -66,7 +67,7 @@ let selectedStyle = {
 
 class DisplayPlayers extends React.Component {
 
-    static contextType = PlayerResourceContext;
+
 
     selectPlayer(e, key) {
         var selectedPlayers = this.state.selectedPlayers;
@@ -81,7 +82,7 @@ class DisplayPlayers extends React.Component {
     };
 
 
-    constructor(props) {
+    constructor(props) {      
         super(props);
         this.state = {
             playerList: new Array(), // not really need to initialise it here , just for the demo purposes .
@@ -128,7 +129,7 @@ class DisplayPlayers extends React.Component {
     }
 
     async loadPlayers() {
-        const promise = await axios.get("http://localhost:5000/api/players");
+        const promise = await axios.get("http://localhost:3000/api/players");
         const status = promise.status;
         if (status === 200) {
             const data = promise.data;
@@ -144,6 +145,7 @@ class DisplayPlayers extends React.Component {
       }
     }
     render() {
+
         return (
             <div>
                 <div>
@@ -157,7 +159,6 @@ class DisplayPlayers extends React.Component {
                 <AutoResponsive ref="container" {...this.getAutoResponsiveProps()} >
                     {this.renderItems(this.state.playerList)}
                 </AutoResponsive>
-                </div>
             </div>
         );
     }
