@@ -123,7 +123,7 @@ class DisplayPlayers extends React.Component {
     }
 
     async loadPlayers() {
-        const promise = await axios.get("http://localhost:3000/api/players");
+        const promise = await axios.get("/api/players");
         const status = promise.status;
         if (status === 200) {
             const data = promise.data;
