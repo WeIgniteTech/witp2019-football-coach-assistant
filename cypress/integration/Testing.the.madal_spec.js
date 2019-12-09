@@ -1,5 +1,5 @@
-describe('Connecting to server test', function() {
-    it('Does the application connect to server!', function() {
+describe('Test result in modal', function() {
+    it('Does the application respond correctly!', function() {
       cy.visit('http://localhost:3004/');
       cy.get('.modal').click();
       cy.get('.btn-group > :nth-child(1)').click();
