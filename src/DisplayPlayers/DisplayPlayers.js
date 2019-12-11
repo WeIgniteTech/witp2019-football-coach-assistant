@@ -16,7 +16,7 @@ let style = {
     color: '#514713',
     borderRadius: 5,
     boxShadow: '0 1px 0 rgba(255,255,255,0.5) inset',
-    backgroundColor: '#DF9FDF',
+    backgroundColor: '#808080',
     borderColor: '#796b1d',
     fontSize: '30px',
     lineHeight: '100px',
@@ -47,13 +47,13 @@ let buttonStyle = {
 
 
 let selectedStyle = {
-    height: 160,
-    width: 160,
+    height: 150,
+    width: 150,
     cursor: 'default',
     color: 'black',
     borderRadius: 5,
     boxShadow: '0 1px 0 rgba(255,255,255,0.5) inset',
-    backgroundColor: '#BF40BF',
+    backgroundColor: '#808000',
     borderColor: '#796b1d',
     fontSize: '30px',
     lineHeight: '100px',
